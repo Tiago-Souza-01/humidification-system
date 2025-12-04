@@ -23,13 +23,13 @@ def receber_telemetria(request):
         nivel_agua_baixo = bool(payload.get('nivel_agua_baixo', False))
         umidade = float(payload.get('umidade'))
         violacao_geral = bool(payload.get('violacao_geral', False))
+        sistema_ativo = bool(payload.get('sistema_ativo'))
+        atuando = bool(payload.get('atuando'))
     except Exception:
         return HttpResponseBadRequest('Campos faltando ou inválidos')
 
     setpoint = _get_current_setpoint()
 
-    sistema_ativo = True
-    atuando = umidade < setpoint
     alarme = violacao_geral or nivel_agua_baixo
 
     t = Telemetria.objects.create(
